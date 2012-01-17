@@ -10,13 +10,13 @@
 <div id="content">
 
 <h1><a href="/">feedify</a>{% if title %} :: {{ title }}{% endif %}</h1>
-<p>RSS feed toys</p>
+<h6>RSS feed toys</h6>
 
 {% if messages %}
-<h2>errors</h2>
+<h2 style="color: red">errors</h2>
 <ul class="messages">
     {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: red">{{ message }}</li>
     {% endfor %}
 </ul>
 {% endif %}
@@ -24,6 +24,7 @@
 {% block content %}{% endblock %}
 
 <div style="clear:both"></div>
+<h6>another crazy <a href="http://movieos.org/">Tom Insam</a> product</h6>
 </div>
 </body>
 </html>

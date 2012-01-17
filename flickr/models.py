@@ -10,6 +10,14 @@ import time
 
 EXTRAS = "date_upload,date_taken,owner_name,icon_server,original_format,description,geo,tags,machine_tags,o_dims,media,path_alias,url_t,url_s,url_m,url_z,url_l,url_o"
 
+class FlickrException(Exception):
+    def __init__(self, code, message):
+        self.code = code
+        super(FlickrException, self).__init__(message)
+    
+    def __unicode__(self):
+        return u"%s: %s"%(self.code, self.message)
+
 class RequestToken(models.Model):
     key = models.CharField(max_length=100, null=False, blank=False, unique=True)
     secret = models.CharField(max_length=100, null=False, blank=False)
@@ -100,10 +108,12 @@ class AccessToken(models.Model):
         self.last_time = time.time() - start
 
         if resp['status'] != '200':
-            raise Exception("flickr API error : %s %s"%(resp["status"], content))
+            raise FlickrException(0, "flickr API error : %s %s"%(resp["status"], content))
 
         if args["format"] == "json":
             data = json.loads(content)
+            if data["stat"] != "ok":
+                raise FlickrException(data["code"], data["message"])
             return data
         return content
     

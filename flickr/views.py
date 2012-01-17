@@ -1,12 +1,8 @@
-from flickr.models import RequestToken, AccessToken, EXTRAS
-from flickr.feeds import PhotoFeed
+from flickr.models import RequestToken, AccessToken, FlickrException
 
-from django.http import Http404, HttpResponseRedirect, HttpResponse
-from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.cache import cache_page
-from django.template import RequestContext
+from django.http import HttpResponseRedirect
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.conf import settings 
 
 import oauth2
@@ -24,6 +20,7 @@ def flickr_auth(fn):
             except AccessToken.DoesNotExist:
                 logging.info("bad access token %s"%request.session['fa'])
                 del request.session['fa']
+        
         return fn(request, *args, **kwargs)
     return wrapper
 
@@ -31,17 +28,23 @@ def flickr_auth(fn):
 @flickr_auth
 def index(request):
     if not hasattr(request, "token"):
-        return render(request, "flickr_anon.html")
+        return render(request, "flickr_anon.html", dict(title="flickr"))
 
     no_instagram = request.REQUEST.get("no_instagram")
     just_friends = request.REQUEST.get("just_friends")
     include_self = request.REQUEST.get("include_self")
 
-    photos = request.token.recent_photos(
-        no_instagram=no_instagram,
-        just_friends=just_friends,
-        include_self=include_self,
-    )
+    try:
+        photos = request.token.recent_photos(
+            no_instagram=no_instagram,
+            just_friends=just_friends,
+            include_self=include_self,
+        )
+    except FlickrException, e:
+        if e.code == 98:
+            # token error
+            request.token.delete()
+        return HttpResponseRedirect("/flickr/auth/?logout")
 
     return render(request, "flickr.html", dict(
         title = "flickr",

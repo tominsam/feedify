@@ -54,7 +54,8 @@ MEDIA_ROOT = ''
 MEDIA_URL = ''
 
 if EPIO:
-    SITE_URL="http://feedify.ep.io"
+    SITE_URL="http://feedify.movieos.org"
+    #SITE_URL="http://feedify.ep.io"
 elif PRODUCTION:
     SITE_URL="http://feedify.movieos.org"
 else:
@@ -169,8 +170,8 @@ if not EPIO:
 
 
 
-FLICKR_API_KEY="53a3da32e65985fb4bdd84f498d8a940"
-FLICKR_API_SECRET="bf0dea6416dcbd9c"
+FLICKR_API_KEY="2d56dbb2d5cf87796478b53e4949dc66"
+FLICKR_API_SECRET="c27d752ea2bdba80"
 FLICKR_API_URL="http://api.flickr.com/services/rest/"
 
 FLICKR_REQUEST_TOKEN_URL="http://www.flickr.com/services/oauth/request_token"

@@ -3,15 +3,9 @@
 {% block title %}flickr{% endblock %}
 {% block content %}
 
-<p>You are logged in as {{ token.fullname }}. <a href="/flickr/auth/?logout">log out</a>.</p>
-<hr>
+<p>Thanks! You are logged in as {{ token.fullname }}. <a href="/flickr/auth/?logout">log out</a>.</p>
+<p>Here are recent uploads from your contacts. The Flickr API call to fetch this took {{ time|floatformat }} seconds.</p>
 
-{% include "_flickr_header.html" %}
-
-<hr>
-<p>Here are the 5 most recent photos of each of your contacts. (flickr API call to fetch this took {{ time }} seconds.)</p>
-
-<br>
 <p>You can get the feed for these photos at</p>
 <center><pre><strong>{{ settings.SITE_URL }}/flickr/feed/{{ token.feed_secret }}/</strong></pre></center>
 
@@ -35,5 +29,12 @@
     <hr>
     {% include "_flickr_photo.html" %}
 {% endfor %}
+
+
+<hr>
+
+{% include "_flickr_header.html" %}
+
+
 
 {% endblock %}

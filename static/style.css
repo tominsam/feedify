@@ -7,8 +7,9 @@ body {
   background: #f3f3f3;
   color: #333;
   text-align: left;
-  font-size: 12px;
-  padding-left: 10px;
+  font-size: 16px;
+  line-height: 24px;
+  padding-left: 15px;
 }
 
 /* http://www.sovavsiti.cz/css/hr.html */
@@ -28,23 +29,13 @@ h3 { font-size: 1.2em }
 
 a {
   color: #0000ff;
-  text-decoration: none;
-  border-bottom: 1px dotted #0000ff;
 }
 a:hover {
   color: #0000ff;
-  text-decoration: none;
-  border-bottom: 1px solid #0000ff;
 }
 a:visited {
   color: #0000ff;
-  text-decoration: none;
-  border-bottom: 1px dotted #0000ff;
 }
-a.withImage { /* this class added by JS. eww. */
-  border: none !important;
-}
-a img { border: none }
 
 h1 {
   margin-bottom: 0;

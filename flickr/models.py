@@ -62,7 +62,7 @@ class AccessToken(models.Model):
             secret = data["oauth_token_secret"],
             username=data["username"],
             nsid=data["user_nsid"],
-            fullname = data["fullname"],
+            fullname = data.get("fullname", data["username"]),
             updated = datetime.datetime.utcnow(),
         )
         try:

@@ -1,0 +1,39 @@
+{% extends "base.html" %}{% load cache %}
+
+{% block title %}flickr{% endblock %}
+{% block content %}
+
+<p>You are logged in as {{ token.fullname }}. <a href="/flickr/auth/?logout">log out</a>.</p>
+<hr>
+
+{% include "_flickr_header.html" %}
+
+<hr>
+<p>Here are the 5 most recent photos of each of your contacts. (flickr API call to fetch this took {{ time }} seconds.)</p>
+
+<br>
+<p>You can get the feed for these photos at</p>
+<center><pre><strong>{{ settings.SITE_URL }}/flickr/feed/{{ token.feed_secret }}/</strong></pre></center>
+
+<br>
+<p>Exclude instagram photos (maybe you see them from somewhere else):</p>
+<center><pre><strong>{{ settings.SITE_URL }}/flickr/feed/{{ token.feed_secret }}/?no_instagram=1</strong></pre></center>
+
+<br>
+<p>Include your own photos:</p>
+<center><pre><strong>{{ settings.SITE_URL }}/flickr/feed/{{ token.feed_secret }}/?include_self=1</strong></pre></center>
+
+<br>
+<p>Only photos from your friends:</p>
+<center><pre><strong>{{ settings.SITE_URL }}/flickr/feed/{{ token.feed_secret }}/?just_friends=1</strong></pre></center>
+
+<br>
+<p>Or combine things:</p>
+<center><pre><strong>{{ settings.SITE_URL }}/flickr/feed/{{ token.feed_secret }}/?just_friends=1&amp;no_instagram=1</strong></pre></center>
+
+{% for obj in photos %}
+    <hr>
+    {% include "_flickr_photo.html" %}
+{% endfor %}
+
+{% endblock %}

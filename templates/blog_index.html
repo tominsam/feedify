@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% load cache %}
+
+{% block content %}
+
+{% for page in pages %}
+    {% if page.title %}
+      <h2 class="post_title">{{page.title}}</h2>
+    {% endif %}
+
+    {% include "_date.html" %}
+
+    <div class="post">
+      {{ page.render }}
+    </div>
+{% endfor %}
+
+<div class="small" style="width: 100%; display: block; overflow: hidden">
+  <a style="float: right" href="/blog/archive/">older &raquo;</a>
+</div>
+
+
+{% endblock %}

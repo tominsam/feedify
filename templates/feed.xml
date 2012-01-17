@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+ <title>movieos.org</title>
+ <link href="http://movieos.org/blog/feed/" rel="self"/>
+ <link href="http://movieos.org/blog/"/>
+ <updated>{{ updated|date:"Y-m-d\TH:i:s+00:00" }}</updated>
+ <id>/blog/</id>
+ <author>
+   <name>Tom Insam</name>
+   <email>tom@movieos.org</email>
+ </author>
+
+ {% for page in pages %}{% if page.feed_chunk %}
+{{ page.feed_chunk|safe }} {% else %}
+{% include "_feed_item.xml" %}
+{% endif %}{% endfor %}
+ 
+</feed>

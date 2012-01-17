@@ -1,0 +1,6 @@
+Django>=1.3.0
+South
+django-debug-toolbar
+gunicorn
+oauth2
+

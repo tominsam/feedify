@@ -1,0 +1,179 @@
+# Django settings for feedify project.
+import os
+
+ROOT = os.path.dirname(__file__)
+
+EPIO = os.environ.get("EPIO", False) and True or False
+
+# hate this so much
+if EPIO:
+    PRODUCTION = True
+else:
+    PRODUCTION = False
+
+try:
+    from local_settings import PRODUCTION
+except ImportError:
+    pass
+
+
+
+if PRODUCTION:
+    DEBUG = False
+else:
+    DEBUG = True
+
+TEMPLATE_DEBUG = DEBUG
+
+ADMINS = (
+    ("Tom Insam", "tom@movieos.org")
+)
+
+MANAGERS = ADMINS
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'feedify',                      # Or path to database file if using sqlite3.
+        'USER': 'root',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
+
+APPEND_SLASH = True
+
+TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'en-us'
+SITE_ID = 1
+USE_I18N = False
+USE_L10N = False
+
+MEDIA_ROOT = ''
+MEDIA_URL = ''
+
+if EPIO:
+    SITE_URL="http://feedify.ep.io"
+elif PRODUCTION:
+    SITE_URL="http://feedify.movieos.org"
+else:
+    SITE_URL="http://localhost:8002"
+
+
+
+ADMIN_MEDIA_PREFIX = '/static/admin/'
+
+STATIC_URL='/static'
+
+if not PRODUCTION:
+    STATICFILES_DIRS = (
+        "static",
+        ("admin", "venv/lib/python2.7/site-packages/django/contrib/admin/media"),
+    )
+
+SECRET_KEY = '28485884295865-230293-423572-2508923745934852-52-5862523'
+
+SESSION_COOKIE_NAME = "feedify_session"
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+#     'django.template.loaders.eggs.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.contrib.messages.context_processors.messages",
+    "core.context_processors.all_settings",
+)
+
+
+MIDDLEWARE_CLASSES = [
+    'django.middleware.common.CommonMiddleware',
+    'session.middleware.SessionMiddleware', # 'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+]
+
+# if not PRODUCTION:
+#     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+#     INTERNAL_IPS = ('127.0.0.1',)
+#     DEBUG_TOOLBAR_CONFIG = {
+#         "INTERCEPT_REDIRECTS": False,
+#     }
+
+
+ROOT_URLCONF = 'urls'
+
+TEMPLATE_DIRS = (
+    os.path.join(ROOT, "templates"),
+)
+
+INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.admin',
+    'django.contrib.staticfiles',
+
+    # deps
+    "south",
+    "debug_toolbar",
+
+    # my apps
+    "core",
+    "flickr",
+)
+
+if not EPIO:
+    LOGGING = {
+        'version': 1,
+        'formatters': {
+            'verbose': {
+                'format': '%(levelname)s|%(asctime)s|%(process)d|%(module)s|%(message)s'
+            },
+        },
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'verbose'
+            },
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'formatter': 'verbose',
+                'filename': 'feedify_django.log',
+            },
+        },
+        'loggers': {
+            'django': {
+                'level': 'INFO', # SQL loggiung on debug
+                'handlers': ['console', 'file'],
+            },
+            '': {
+                'level': 'INFO', # SQL logging on debug
+                'handlers': ['console', 'file'],
+            },
+        }
+    }
+
+
+
+
+FLICKR_API_KEY="53a3da32e65985fb4bdd84f498d8a940"
+FLICKR_API_SECRET="bf0dea6416dcbd9c"
+FLICKR_API_URL="http://api.flickr.com/services/rest/"
+
+FLICKR_REQUEST_TOKEN_URL="http://www.flickr.com/services/oauth/request_token"
+FLICKR_ACCESS_TOKEN_URL="http://www.flickr.com/services/oauth/access_token"
+FLICKR_AUTHORIZE_URL="http://www.flickr.com/services/oauth/authorize"
+

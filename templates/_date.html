@@ -1,0 +1,12 @@
+<div class="date">
+    <span class="month">{{page.created|date:"b"}}</span>
+    <span class="day">{{page.created|date:"d"}}</span>
+    <span class="year">{{page.created|date:"Y"}}</span>
+    <a class="permalink" href="{{page.get_absolute_url}}">permalink</a>
+
+    {% for tag in page.sorted_tags %}
+        {% if forloop.first %}<br>{% endif %}
+        <a class="tag" href="/tags/{{ tag }}/">#{{ tag }}</a>
+    {% endfor %}
+
+</div>

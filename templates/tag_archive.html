@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% load cache %}
+
+{% block content %}
+
+<h1>All pages tagged {{tags|join:", "}}</h1>
+
+{% for page in pages %}
+<div class="page-in-list">
+    <span class="list-main">
+      <span class="list-date">{{ page.section.title }}</span> &raquo;
+      {% if page.section.slug == "blog" %}<span class="list-date">{{ page.created|date:"M Y" }}</span> &raquo;{% endif %}
+      <span class="list-title"><a href="{{page.get_absolute_url}}">{{ page }}</a></span>
+    </span>
+    
+    {% if page.precis %}
+    <span class="list-precis">
+      {{ page.precis }}
+    </span>
+    {% endif %}
+
+    {% for tag in page.sorted_tags %}
+        {% if forloop.first %}<span class="list-tags">{% endif %}
+        <a class="tag" href="/tags/{{ tag }}/">#{{ tag }}</a>
+        {% if forloop.last %}</span>{% endif %}
+    {% endfor %}
+</div>
+{% endfor %}
+
+{% endblock %}
+

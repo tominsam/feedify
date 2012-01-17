@@ -100,6 +100,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'core.exception_handling.ExceptionMiddleware',
 ]
 
 # if not PRODUCTION:
@@ -178,3 +179,10 @@ FLICKR_REQUEST_TOKEN_URL="http://www.flickr.com/services/oauth/request_token"
 FLICKR_ACCESS_TOKEN_URL="http://www.flickr.com/services/oauth/access_token"
 FLICKR_AUTHORIZE_URL="http://www.flickr.com/services/oauth/authorize"
 
+
+
+INSTAGRAM_API_KEY="de46f87ac84b42b4b9a6a0058adb855e"
+INSTAGRAM_API_SECRET="b83863d206dc4189976798ff5eae45e4"
+
+INSTAGRAM_AUTHORIZE_URL="https://api.instagram.com/oauth/authorize/"
+INSTAGRAM_ACCESS_TOKEN_URL="https://api.instagram.com/oauth/access_token"

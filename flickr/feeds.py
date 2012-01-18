@@ -45,6 +45,9 @@ class FlickrPhotoFeed(Feed):
     def item_title(self, item):
         return u"%s - %s"%(item["ownername"], item["title"])
     
+    def item_author_name(self, item):
+        return item["ownername"]
+    
     def item_link(self, item):
         return item["link"]
     

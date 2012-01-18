@@ -28,6 +28,10 @@ class InstagramPhotoFeed(Feed):
             caption = "{no caption}"
 
         return u"%s - %s"%(item["user"]["full_name"], caption)
+
+    def item_author_name(self, item):
+        return item["user"]["full_name"]
+    
     
     def item_link(self, item):
         return item["link"] or "http://feedify.movieos.org/instagram/"

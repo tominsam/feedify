@@ -1,5 +1,7 @@
 from django.db import models, IntegrityError
 from django.conf import settings
+from django.core.cache import cache
+
 import urlparse
 import urllib
 import datetime
@@ -118,21 +120,27 @@ class AccessToken(models.Model):
         return content
     
     def recent_photos(self, no_instagram=False, just_friends=False, include_self=False):
+        self.last_time = None
 
-        response = self.call("get", "flickr.photos.getContactsPhotos", 
-            count = 50,
-            extras = EXTRAS,
-            just_friends = (just_friends and "1" or "0"),
-            include_self = (include_self and "1" or "0"),
-        )
-        photos = response["photos"]["photo"]
+        cache_key = 'flickr_items_%s_%s_%s_%s'%(self.id, no_instagram, just_friends, include_self)
+        photos = cache.get(cache_key)
 
-        def filter_instagram(p):
-            mt = p["machine_tags"].split()
-            return not "uploaded:by=instagram" in mt
+        if not photos:
+            response = self.call("get", "flickr.photos.getContactsPhotos", 
+                count = 50,
+                extras = EXTRAS,
+                just_friends = (just_friends and "1" or "0"),
+                include_self = (include_self and "1" or "0"),
+            )
+            photos = response["photos"]["photo"]
 
-        if no_instagram:
-            photos = filter(filter_instagram, photos)
+            def filter_instagram(p):
+                mt = p["machine_tags"].split()
+                return not "uploaded:by=instagram" in mt
+            if no_instagram:
+                photos = filter(filter_instagram, photos)
+    
+            cache.set(cache_key, photos, 120)
 
         for p in photos:
             p["description"] = p["description"]["_content"]

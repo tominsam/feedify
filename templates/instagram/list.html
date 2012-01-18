@@ -3,7 +3,11 @@
 {% block content %}
 
 <p>Thanks! You are logged in as {{ token.username }}. <a href="/instagram/auth/?logout">log out</a>.</p>
-<p>Here are recent uploads from your contacts. The API call to fetch this took {{ time|floatformat }} seconds.</p>
+<p>Here are recent uploads from your contacts.
+
+{% if time %}The API call to fetch this took {{ time|floatformat }} seconds.
+{% else %}The API call to fetch this was cached.{% endif %}
+</p>
 
 <p>You can get the feed for these photos at</p>
 <center><pre><strong>{{ settings.SITE_URL }}/instagram/feed/{{ token.feed_secret }}/</strong></pre></center>

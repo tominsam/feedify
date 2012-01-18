@@ -3,7 +3,6 @@ from flickr.feeds import GeoFeed
 
 from django.contrib.syndication.views import Feed
 from django.shortcuts import get_object_or_404
-from django.core.cache import cache
 
 
 class InstagramPhotoFeed(Feed):
@@ -20,12 +19,7 @@ class InstagramPhotoFeed(Feed):
         return u"instagram feed for %s"%obj.username
 
     def items(self, obj):
-        photos = cache.get('instagram_items_%s'%obj.id)
-        if not photos:
-            photos = obj.recent_photos()
-            cache.set('instagram_items_%s'%obj.id, photos, 60)
-        
-        return photos
+        return obj.recent_photos()
 
     def item_title(self, item):
         try:

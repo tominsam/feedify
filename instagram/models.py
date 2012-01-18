@@ -1,5 +1,7 @@
 from django.db import models, IntegrityError
 from django.conf import settings
+from django.core.cache import cache
+
 import urllib, urllib2
 import datetime
 import uuid
@@ -54,14 +56,18 @@ class AccessToken(models.Model):
 
     
     def recent_photos(self):
-        url = "https://api.instagram.com/v1/users/self/feed?access_token=%s"%self.key
-        conn = urllib2.urlopen(url)
+        cache_key = 'instagram_items_%s'%self.id
+        self.last_time = None
+        photos = cache.get(cache_key)
 
-        start = time.time()
-        data = json.loads(conn.read())
-        self.last_time = time.time() - start
-
-        photos = data["data"]
+        if not photos:
+            url = "https://api.instagram.com/v1/users/self/feed?access_token=%s"%self.key
+            conn = urllib2.urlopen(url)
+            start = time.time()
+            data = json.loads(conn.read())
+            self.last_time = time.time() - start
+            photos = data["data"]
+            cache.set(cache_key, photos, 120)
 
         for p in photos:
             p["created_time"] = datetime.datetime.utcfromtimestamp(float(p["created_time"]))

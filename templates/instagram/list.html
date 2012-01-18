@@ -1,0 +1,23 @@
+{% extends "base.html" %}{% load cache %}
+
+{% block content %}
+
+<p>Thanks! You are logged in as {{ token.username }}. <a href="/instagram/auth/?logout">log out</a>.</p>
+<p>Here are recent uploads from your contacts. The API call to fetch this took {{ time|floatformat }} seconds.</p>
+
+<p>You can get the feed for these photos at</p>
+<center><pre><strong>{{ settings.SITE_URL }}/instagram/feed/{{ token.feed_secret }}/</strong></pre></center>
+
+{% for obj in photos %}
+    <hr>
+    {% include "instagram/_photo.html" %}
+{% endfor %}
+
+
+<hr>
+
+{% include "instagram/_about.html" %}
+
+
+
+{% endblock %}

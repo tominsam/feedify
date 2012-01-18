@@ -19,7 +19,7 @@ class GeoFeed(Atom1Feed):
 
 
 
-class PhotoFeed(Feed):
+class FlickrPhotoFeed(Feed):
     feed_type = GeoFeed
     description_template = '_flickr_photo.html'
 

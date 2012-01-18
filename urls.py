@@ -2,7 +2,7 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
-from flickr.feeds import PhotoFeed
+from flickr.feeds import FlickrPhotoFeed
 
 
 urlpatterns = patterns('',
@@ -12,5 +12,9 @@ urlpatterns = patterns('',
 
     url(r'^flickr/$', "flickr.views.index"),
     url(r'^flickr/auth/$', "flickr.views.auth"),
-    url(r'^flickr/feed/([^/]+)/$', PhotoFeed()),
+    url(r'^flickr/feed/([^/]+)/$', FlickrPhotoFeed()),
+
+    url(r'^instagram/$', "instagram.views.index"),
+    url(r'^instagram/auth/$', "instagram.views.auth"),
+#    url(r'^instagram/feed/([^/]+)/$', PhotoFeed()),
 )

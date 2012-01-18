@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     # my apps
     "core",
     "flickr",
+    "instagram",
 )
 
 if not EPIO:
@@ -180,9 +181,13 @@ FLICKR_ACCESS_TOKEN_URL="http://www.flickr.com/services/oauth/access_token"
 FLICKR_AUTHORIZE_URL="http://www.flickr.com/services/oauth/authorize"
 
 
-
-INSTAGRAM_API_KEY="de46f87ac84b42b4b9a6a0058adb855e"
-INSTAGRAM_API_SECRET="b83863d206dc4189976798ff5eae45e4"
+if PRODUCTION:
+    INSTAGRAM_API_KEY="de46f87ac84b42b4b9a6a0058adb855e"
+    INSTAGRAM_API_SECRET="b83863d206dc4189976798ff5eae45e4"
+else:
+    INSTAGRAM_API_KEY="2ee26d19721040c98b4f93da87d7b485"
+    INSTAGRAM_API_SECRET="4acc3891a73147dfb77262b0daf3cc01"
 
 INSTAGRAM_AUTHORIZE_URL="https://api.instagram.com/oauth/authorize/"
 INSTAGRAM_ACCESS_TOKEN_URL="https://api.instagram.com/oauth/access_token"
+INSTAGRAM_API_URL="https://api.instagram.com/v1/"

@@ -1,2 +1,3 @@
 build/
 venv/
+feedify_django.log

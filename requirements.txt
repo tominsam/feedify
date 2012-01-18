@@ -3,4 +3,6 @@ South
 django-debug-toolbar
 gunicorn
 oauth2
+python-memcached
+django-redis-cache
 

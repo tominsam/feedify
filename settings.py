@@ -169,8 +169,30 @@ if not EPIO:
         }
     }
 
+if EPIO:
 
+    from bundle_config import config
+    CACHES = {
+        'default': {
+            'BACKEND': 'redis_cache.RedisCache',
+            'LOCATION': '{host}:{port}'.format(
+                    host=config['redis']['host'],
+                    port=config['redis']['port']),
+            'OPTIONS': {
+                'PASSWORD': config['redis']['password'],
+            },
+            'VERSION': config['core']['version'],
+        },
+    }
 
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '127.0.0.1:11211',
+        }
+    }
+    
 
 FLICKR_API_KEY="2d56dbb2d5cf87796478b53e4949dc66"
 FLICKR_API_SECRET="c27d752ea2bdba80"

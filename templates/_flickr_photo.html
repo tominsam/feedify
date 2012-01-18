@@ -5,9 +5,9 @@
     </div>
 
     <div style="width: 450px; float: left; margin-left: 10px">
-        <h2 style="border: 0; margin: 0 0 5px 0">{{ obj.ownername }}: <a href="{{ obj.link }}">{{ obj.title }}</a></h2>
+        <h2 style="border: 0; margin: 0 0 5px 0">{{ obj.ownername }}: <a href="{{ obj.link }}">{{ obj.title|default:"{no title}" }}</a></h2>
         <p><strong>uploaded</strong> {{ obj.upload_date|date:"H:i F j Y" }}</p>
-        <p><strong>tagged</strong> {{ obj.tags|join:" : " }}</p>
+        {% if obj.tags %}<p><strong>tagged</strong> {{ obj.tags|join:" : " }}</p>{% endif %}
         <p>{{ obj.description|safe }}</p>
     </div>
 

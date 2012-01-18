@@ -57,13 +57,18 @@ def auth(request):
     # successful auth
     code = request.REQUEST.get("code")
     if code:
-        conn = urllib2.urlopen(settings.INSTAGRAM_ACCESS_TOKEN_URL, urllib.urlencode(dict(
-            client_id = settings.INSTAGRAM_API_KEY,
-            client_secret = settings.INSTAGRAM_API_SECRET,
-            grant_type= "authorization_code",
-            redirect_uri= redirect,
-            code = code,
-        )))
+        try:
+            conn = urllib2.urlopen(settings.INSTAGRAM_ACCESS_TOKEN_URL, urllib.urlencode(dict(
+                client_id = settings.INSTAGRAM_API_KEY,
+                client_secret = settings.INSTAGRAM_API_SECRET,
+                grant_type= "authorization_code",
+                redirect_uri= redirect,
+                code = code,
+            )))
+        except urllib2.HTTPError, e:
+            messages.add_message(request, messages.INFO, "Problem talking to instagram: %s. Try re-doing auth."%e.read())
+            return HttpResponseRedirect("/instagram/")
+
 
         # saves the token as well.
         token = AccessToken.from_string(conn.read())

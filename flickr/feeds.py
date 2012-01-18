@@ -3,6 +3,7 @@ from flickr.models import AccessToken
 from django.contrib.syndication.views import Feed
 from django.utils.feedgenerator import Atom1Feed
 from django.shortcuts import get_object_or_404
+from django.core.cache import cache
 
 
 
@@ -30,17 +31,22 @@ class FlickrPhotoFeed(Feed):
         return get_object_or_404(AccessToken, feed_secret = token_secret)
     
     def link(self, obj):
-        return "http://flickr.com/"
+        return "http://feedify.movieos.org/flickr/"
     
     def title(self, obj):
         return u"flickr photos for contacts of %s"%obj.fullname
 
     def items(self, obj):
-        return obj.recent_photos(
-            no_instagram=self.no_instagram,
-            just_friends=self.just_friends,
-            include_self=self.include_self,
-        )
+        cache_key = 'flickr_items_%s_%s_%s_%s'%(obj.id, self.no_instagram, self.just_friends, self.include_self)
+        photos = cache.get(cache_key)
+        if not photos:
+            photos = obj.recent_photos(
+                no_instagram=self.no_instagram,
+                just_friends=self.just_friends,
+                include_self=self.include_self,
+            )
+            cache.set(cache_key, photos, 60)
+        return photos
 
     def item_title(self, item):
         return u"%s - %s"%(item["ownername"], item["title"])

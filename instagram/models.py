@@ -63,8 +63,6 @@ class AccessToken(models.Model):
 
         photos = data["data"]
 
-        print repr(photos[0])
-
         for p in photos:
             p["created_time"] = datetime.datetime.utcfromtimestamp(float(p["created_time"]))
 

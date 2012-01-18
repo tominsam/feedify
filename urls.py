@@ -3,6 +3,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from flickr.feeds import FlickrPhotoFeed
+from instagram.feeds import InstagramPhotoFeed
 
 
 urlpatterns = patterns('',
@@ -16,5 +17,5 @@ urlpatterns = patterns('',
 
     url(r'^instagram/$', "instagram.views.index"),
     url(r'^instagram/auth/$', "instagram.views.auth"),
-#    url(r'^instagram/feed/([^/]+)/$', PhotoFeed()),
+    url(r'^instagram/feed/([^/]+)/$', InstagramPhotoFeed()),
 )

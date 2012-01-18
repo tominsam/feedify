@@ -1,7 +1,0 @@
-<entry>
-    <title>{{ page.title }}</title>
-    <link href="http://movieos.org{{ page.get_absolute_url }}"/>
-    <updated>{{ page.date|date:"Y-m-d\TH:i:s+00:00" }}</updated>
-    <id>tag:movieos.org,{{ page.created|date:"Y-m-d" }}:{{ page.get_absolute_url }}</id>
-    <content type="html">{{ page.render|force_escape }}</content>
-</entry>

@@ -3,25 +3,17 @@ import os
 
 ROOT = os.path.dirname(__file__)
 
-EPIO = os.environ.get("EPIO", False) and True or False
-
-# hate this so much
-if EPIO:
-    PRODUCTION = True
-else:
-    PRODUCTION = False
-
+PRODUCTION = os.environ.get("PRODUCTION", False) and True or False
 try:
     from local_settings import PRODUCTION
 except ImportError:
     pass
 
-
-
 if PRODUCTION:
     DEBUG = False
 else:
     DEBUG = True
+
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -53,10 +45,7 @@ USE_L10N = False
 MEDIA_ROOT = ''
 MEDIA_URL = ''
 
-if EPIO:
-    SITE_URL="http://feedify.movieos.org"
-    #SITE_URL="http://feedify.ep.io"
-elif PRODUCTION:
+if PRODUCTION:
     SITE_URL="http://feedify.movieos.org"
 else:
     SITE_URL="http://localhost:8002"
@@ -136,62 +125,44 @@ INSTALLED_APPS = (
     "instagram",
 )
 
-if not EPIO:
-    LOGGING = {
-        'version': 1,
-        'formatters': {
-            'verbose': {
-                'format': '%(levelname)s|%(asctime)s|%(process)d|%(module)s|%(message)s'
-            },
+LOGGING = {
+    'version': 1,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s|%(asctime)s|%(process)d|%(module)s|%(message)s'
         },
-        'handlers': {
-            'console': {
-                'level': 'DEBUG',
-                'class': 'logging.StreamHandler',
-                'formatter': 'verbose'
-            },
-            'file': {
-                'level': 'DEBUG',
-                'class': 'logging.FileHandler',
-                'formatter': 'verbose',
-                'filename': 'feedify_django.log',
-            },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
         },
-        'loggers': {
-            'django': {
-                'level': 'INFO', # SQL loggiung on debug
-                'handlers': ['console', 'file'],
-            },
-            '': {
-                'level': 'INFO', # SQL logging on debug
-                'handlers': ['console', 'file'],
-            },
-        }
-    }
-
-if EPIO:
-
-    from bundle_config import config
-    CACHES = {
-        'default': {
-            'BACKEND': 'redis_cache.RedisCache',
-            'LOCATION': '{host}:{port}'.format(
-                    host=config['redis']['host'],
-                    port=config['redis']['port']),
-            'OPTIONS': {
-                'PASSWORD': config['redis']['password'],
-            },
-            'VERSION': config['core']['version'],
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': 'feedify_django.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'level': 'INFO', # SQL loggiung on debug
+            'handlers': ['console', 'file'],
+        },
+        '': {
+            'level': 'INFO', # SQL logging on debug
+            'handlers': ['console', 'file'],
         },
     }
+}
 
-else:
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-            'LOCATION': '127.0.0.1:11211',
-        }
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
     }
+}
     
 
 FLICKR_API_KEY="2d56dbb2d5cf87796478b53e4949dc66"

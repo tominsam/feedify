@@ -4,6 +4,7 @@ from base64 import b64decode, b64encode
 import hashlib
 from time import time
 import zlib
+import logging
 
 from django.conf import settings
 from django.contrib.sessions.backends.base import SessionBase
@@ -99,5 +100,6 @@ class SessionStore(SessionBase):
             return {}
         json, json_md5 = data[:-32], data[-32:]
         if hashlib.md5(json + settings.SECRET_KEY).hexdigest() != json_md5:
-            raise SuspiciousOperation('User tampered with session cookie')
+            logging.error('User tampered with session cookie')
+            return {}
         return simplejson.loads(json)

@@ -5,7 +5,7 @@ ROOT = os.path.dirname(__file__)
 
 PRODUCTION = os.environ.get("PRODUCTION", False) and True or False
 try:
-    from local_settings import PRODUCTION
+    from local_settings import *
 except ImportError:
     pass
 
@@ -62,7 +62,7 @@ if not PRODUCTION:
         ("admin", "venv/lib/python2.7/site-packages/django/contrib/admin/media"),
     )
 
-SECRET_KEY = '28485884295865-230293-423572-2508923745934852-52-5862523'
+SECRET_KEY = 'dev-secret-key'
 
 SESSION_COOKIE_NAME = "feedify_session"
 

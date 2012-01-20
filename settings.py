@@ -28,6 +28,8 @@ SITE_ID = 1
 USE_I18N = False
 USE_L10N = False
 
+USE_ETAGS = True
+
 MEDIA_ROOT = ''
 MEDIA_URL = ''
 
@@ -180,3 +182,4 @@ else:
     DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
+

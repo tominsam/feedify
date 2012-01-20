@@ -34,7 +34,7 @@ class InstagramPhotoFeed(Feed):
     
     
     def item_link(self, item):
-        return item["link"] or "http://feedify.movieos.org/instagram/"
+        return item["link"]
     
     def item_pubdate(self, item):
         return item["created_time"]

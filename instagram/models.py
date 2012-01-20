@@ -71,6 +71,9 @@ class AccessToken(models.Model):
 
         for p in photos:
             p["created_time"] = datetime.datetime.utcfromtimestamp(float(p["created_time"]))
-
+            if not p["link"]:
+                # private photos don't have public links. link to full-rez image instead.
+                p["link"] = p["images"]["standard_resolution"]["url"]
+        
         return photos
 

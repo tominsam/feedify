@@ -5,10 +5,8 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.conf import settings 
 
-import oauth2
 import urllib, urllib2
 import logging
-import json
 
 
 def index(request):
@@ -33,8 +31,6 @@ def index(request):
         photos = photos,
         time = token.last_time,
     ))
-
-
 
 
 def auth(request):
@@ -68,7 +64,6 @@ def auth(request):
         except urllib2.HTTPError, e:
             messages.add_message(request, messages.INFO, "Problem talking to instagram: %s. Try re-doing auth."%e.read())
             return HttpResponseRedirect("/instagram/")
-
 
         # saves the token as well.
         token = AccessToken.from_string(conn.read())

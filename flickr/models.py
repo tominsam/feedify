@@ -70,9 +70,12 @@ class AccessToken(models.Model):
         try:
             return cls.objects.create(**properties)
         except IntegrityError:
-            token = cls.objects.get(key=properties["key"])
-            if token.nsid != properties["nsid"]:
-                raise Exception("token re-used for another user. BAD THING.")
+            try:
+                token = cls.objects.get(key=properties["key"])
+                if token.nsid != properties["nsid"]:
+                    raise Exception("token re-used for another user. BAD THING.")
+            except cls.DoesNotExist:
+                token = cls.objects.get(nsid=properties["nsid"])
 
             for k, v in properties.items():
                 setattr(token, k, v)

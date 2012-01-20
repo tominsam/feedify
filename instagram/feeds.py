@@ -19,6 +19,7 @@ class InstagramPhotoFeed(Feed):
         return u"instagram feed for %s"%obj.username
 
     def items(self, obj):
+        obj.touch()
         return obj.recent_photos()
 
     def item_title(self, item):

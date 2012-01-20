@@ -9,6 +9,6 @@ admin.site.register(RequestToken,
 )
 
 admin.site.register(AccessToken,
-    list_display = ("key", "nsid", "username", "fullname", "created"),
+    list_display = ("key", "nsid", "fullname", "created", "fetched"),
     date_hierarchy = "created",
 )

@@ -45,6 +45,7 @@ class AccessToken(models.Model):
     key = models.CharField(max_length=100, null=False, blank=False, unique=True)
     secret = models.CharField(max_length=100, null=False, blank=False)
     created = models.DateTimeField(default=datetime.datetime.utcnow, null=False, blank=False)
+    fetched = models.DateTimeField(null=True)
     updated = models.DateTimeField(blank=False, null=False)
     username = models.CharField(max_length=100, null=False, blank=False)
     nsid = models.CharField(max_length=20, null=False, blank=False, unique=True)
@@ -153,3 +154,7 @@ class AccessToken(models.Model):
         
         return photos
 
+    def touch(self):
+        self.fetched = datetime.datetime.utcnow()
+        self.save()
+        

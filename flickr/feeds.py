@@ -45,6 +45,7 @@ class FlickrPhotoFeed(Feed):
         return u"flickr photos for contacts of %s"%obj.fullname
 
     def items(self, obj):
+        obj.touch()
         return obj.recent_photos(
             no_instagram=self.no_instagram,
             just_friends=self.just_friends,

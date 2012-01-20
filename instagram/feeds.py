@@ -40,10 +40,21 @@ class InstagramPhotoFeed(Feed):
         return item["created_time"]
 
     def item_extra_kwargs(self, item):
+        extra = {}
         if "location" in item and item["location"] and "latitude" in item["location"] and "longitude" in item["location"]:
-            return {
-                "latitude": item["location"]["latitude"],
-                "longitude": item["location"]["longitude"],
-            }
-        return {}
+            extra["latitude"] = item["location"]["latitude"]
+            extra["longiutude"] = item["location"]["longitude"]
+        
+        extra["media:thumbnail"] = dict(
+            url = item["images"]["thumbnail"]["url"],
+            width = str(item["images"]["thumbnail"]["width"]),
+            height = str(item["images"]["thumbnail"]["height"]),
+        )
+        extra["media:content"] = dict(
+            url = item["images"]["standard_resolution"]["url"],
+            width = str(item["images"]["standard_resolution"]["width"]),
+            height = str(item["images"]["standard_resolution"]["height"]),
+        )
+
+        return extra
     

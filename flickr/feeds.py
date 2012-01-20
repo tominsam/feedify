@@ -10,13 +10,22 @@ class GeoFeed(Atom1Feed):
     def root_attributes(self):
         attrs = super(GeoFeed, self).root_attributes()
         attrs['xmlns:georss'] = 'http://www.georss.org/georss'
+        attrs['xmlns:media'] = 'http://search.yahoo.com/mrss/'
         return attrs
 
     def add_item_elements(self, handler, item):
         super(GeoFeed, self).add_item_elements(handler, item)
         if "latitude" in item and "longitude" in item:
             handler.addQuickElement('georss:point', '%(latitude)s %(longitude)s'%item)
+        
+        if "media:thumbnail" in item:
+            handler.addQuickElement("media:thumbnail", attrs = item["media:thumbnail"])
 
+        if "media:content" in item:
+            handler.addQuickElement("media:content", attrs = item["media:content"])
+
+        handler.addQuickElement("media:title", item["title"])
+        
 
 
 class FlickrPhotoFeed(Feed):
@@ -55,11 +64,12 @@ class FlickrPhotoFeed(Feed):
         return item["upload_date"]
 
     def item_extra_kwargs(self, item):
-        # template uses this. So it's safe to assume it's inflated.
+        extra = {}
         if "latitude" in item and "longitude" in item and item["latitude"] and item["longitude"]:
-            return {
-                "latitude": item["latitude"],
-                "longitude": item["longitude"],
-            }
-        return {}
+            extra["latitude"] = item["latitude"]
+            extra["longiutude"] = item["longitude"]
+        
+        #extra["thumbnail"] = item["url_t"]
+
+        return extra
     

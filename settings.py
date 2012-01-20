@@ -3,20 +3,6 @@ import os
 
 ROOT = os.path.dirname(__file__)
 
-PRODUCTION = os.environ.get("PRODUCTION", False) and True or False
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
-if PRODUCTION:
-    DEBUG = False
-else:
-    DEBUG = True
-
-
-TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
     ("Tom Insam", "tom@movieos.org")
 )
@@ -45,22 +31,16 @@ USE_L10N = False
 MEDIA_ROOT = ''
 MEDIA_URL = ''
 
-if PRODUCTION:
-    SITE_URL="http://feedify.movieos.org"
-else:
-    SITE_URL="http://localhost:8002"
-
-
+SITE_URL="http://localhost:8002"
 
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATIC_URL='/static'
 
-if not PRODUCTION:
-    STATICFILES_DIRS = (
-        "static",
-        ("admin", "venv/lib/python2.7/site-packages/django/contrib/admin/media"),
-    )
+STATICFILES_DIRS = (
+    "static",
+    ("admin", "venv/lib/python2.7/site-packages/django/contrib/admin/media"),
+)
 
 SECRET_KEY = 'dev-secret-key'
 
@@ -165,22 +145,38 @@ CACHES = {
 }
     
 
-FLICKR_API_KEY="2d56dbb2d5cf87796478b53e4949dc66"
-FLICKR_API_SECRET="c27d752ea2bdba80"
-FLICKR_API_URL="http://api.flickr.com/services/rest/"
-
 FLICKR_REQUEST_TOKEN_URL="http://www.flickr.com/services/oauth/request_token"
 FLICKR_ACCESS_TOKEN_URL="http://www.flickr.com/services/oauth/access_token"
 FLICKR_AUTHORIZE_URL="http://www.flickr.com/services/oauth/authorize"
 
-
-if PRODUCTION:
-    INSTAGRAM_API_KEY="de46f87ac84b42b4b9a6a0058adb855e"
-    INSTAGRAM_API_SECRET="b83863d206dc4189976798ff5eae45e4"
-else:
-    INSTAGRAM_API_KEY="2ee26d19721040c98b4f93da87d7b485"
-    INSTAGRAM_API_SECRET="4acc3891a73147dfb77262b0daf3cc01"
-
 INSTAGRAM_AUTHORIZE_URL="https://api.instagram.com/oauth/authorize/"
 INSTAGRAM_ACCESS_TOKEN_URL="https://api.instagram.com/oauth/access_token"
 INSTAGRAM_API_URL="https://api.instagram.com/v1/"
+
+
+# these are dev keys
+FLICKR_API_KEY="2d56dbb2d5cf87796478b53e4949dc66"
+FLICKR_API_SECRET="c27d752ea2bdba80"
+FLICKR_API_URL="http://api.flickr.com/services/rest/"
+
+# these are dev keys
+INSTAGRAM_API_KEY="2ee26d19721040c98b4f93da87d7b485"
+INSTAGRAM_API_SECRET="4acc3891a73147dfb77262b0daf3cc01"
+
+
+
+
+
+
+PRODUCTION = False
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
+if PRODUCTION:
+    DEBUG = False
+else:
+    DEBUG = True
+
+TEMPLATE_DEBUG = DEBUG

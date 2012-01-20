@@ -30,7 +30,7 @@ class GeoFeed(Atom1Feed):
 
 class FlickrPhotoFeed(Feed):
     feed_type = GeoFeed
-    description_template = '_flickr_photo.html'
+    description_template = 'flickr/_photo.html'
 
     def get_object(self, request, token_secret):
         self.no_instagram = request.REQUEST.get("no_instagram")

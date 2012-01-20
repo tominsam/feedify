@@ -28,7 +28,7 @@ def flickr_auth(fn):
 @flickr_auth
 def index(request):
     if not hasattr(request, "token"):
-        return render(request, "flickr_anon.html", dict(title="flickr"))
+        return render(request, "flickr/anon.html", dict(title="flickr"))
 
     no_instagram = request.REQUEST.get("no_instagram")
     just_friends = request.REQUEST.get("just_friends")
@@ -46,7 +46,7 @@ def index(request):
             request.token.delete()
         return HttpResponseRedirect("/flickr/auth/?logout")
 
-    return render(request, "flickr.html", dict(
+    return render(request, "flickr/index.html", dict(
         title = "flickr",
         token = request.token,
         photos = photos,

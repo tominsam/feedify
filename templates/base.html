@@ -3,13 +3,18 @@
 <head>
   <title>feedify{% if title %} :: {{ title }}{% endif %}</title>
   <link rel="stylesheet" href="/static/style.css" type="text/css">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="icon" type="image/png" href="/static/favicon.png">
 </head>
 <body>
 
 <div id="content">
 
-<h1><a href="/">feedify</a>{% if title %} :: {{ title }}{% endif %}</h1>
+<h1 style="line-height: 32px; height: 32px; display: block">
+  <img style="vertical-align:middle" src="/static/feed-icon-32x32.png">
+  <a href="/">feedify</a>{% if title %} :: {{ title }}{% endif %}
+</h1>
+
 <h6>RSS feed toys</h6>
 
 {% if messages %}

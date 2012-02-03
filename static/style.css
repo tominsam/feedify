@@ -73,18 +73,11 @@ table td, table th {
     margin: 3px;
 }
 
-.evenrow {
-    background: #ddd;
-}
-
-
-body {
-    background: #ccc;
-}
-
 #content {
-    width: 800px;
-    margin: auto;
+    width: 90%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
     background: white;
     border-left: 1px solid black;
     border-right: 1px solid black;

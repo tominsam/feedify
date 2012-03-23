@@ -35,18 +35,15 @@ def bootstrap():
 
     run("if [ ! -d %s ]; then virtualenv %s; fi"%(VENV, VENV))
 
+    sudo("mkdir -p /var/log/feedify")
+    sudo("chown ubuntu:ubuntu /var/log/feedify /var/log/feedify/*")
+
     sudo("ln -sf %s/deploy/nginx.conf /etc/nginx/sites-enabled/feedify.conf"%DEPLOY)
 
     # can't be symlink, alas. upstart gets stroppy.
     sudo("cp -f %s/deploy/gunicorn.conf /etc/init/feedify.conf"%DEPLOY)
 
-    sudo("/etc/init.d/nginx configtest && /etc/init.d/nginx restart")
-
-
-    put("deploy/gunicorn.conf", "/etc/gunicorn.d/feedify.py", use_sudo=True)
-    put("deploy/nginx.conf", "/etc/nginx/sites-enabled/feedify.conf", use_sudo=True)
-    sudo("/etc/init.d/gunicorn restart")
-    sudo("/etc/init.d/nginx restart")
+    sudo("/etc/init.d/nginx configtest && /etc/init.d/nginx reload")
 
     run("(echo 'create database feedify charset=utf8' | mysql -uroot) || true")
 
@@ -57,9 +54,7 @@ def deploy():
     sync_files()
     run("%s/bin/pip install -q -r %s/requirements.txt"%(VENV, DEPLOY))
     run("cd %s && %s/bin/python manage.py migrate"%(DEPLOY, VENV))
-    sudo("restart feedify")
-    
-
+    sudo("reload feedify")
 
 def get_database():
     run("mysqldump -uroot feedify | gzip -c > /tmp/feedify-dump.sql.gz", shell=False)

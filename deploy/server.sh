@@ -17,5 +17,5 @@ exec /home/ubuntu/venv_feedify/bin/gunicorn_django \
     --timeout 60 \
     --preload \
     --log-level=info \
-    --log-file=/var/log/gunicorn/feedify.log \
+    --log-file=/var/log/feedify/gunicorn.log \
     --pid=/var/run/gunicorn/feedify.pid

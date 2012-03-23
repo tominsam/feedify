@@ -7,7 +7,7 @@ from instagram.feeds import InstagramPhotoFeed
 
 
 urlpatterns = patterns('',
-    (r'^admin/', include(admin.site.urls)),
+    (r'^feedify-admin/', include(admin.site.urls)),
 
     url(r'^$', "core.views.index"),
 

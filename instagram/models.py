@@ -56,13 +56,13 @@ class AccessToken(models.Model):
         return super(AccessToken, self).save(*args, **kwargs)
 
     
-    def recent_photos(self):
+    def get_photos(self, method="users/self/feed"):
         cache_key = 'instagram_items_%s'%self.id
         self.last_time = None
         photos = cache.get(cache_key)
 
         if not photos:
-            url = "https://api.instagram.com/v1/users/self/feed?access_token=%s"%self.key
+            url = "https://api.instagram.com/v1/%s?access_token=%s"%(method, self.key)
             conn = urllib2.urlopen(url)
             start = time.time()
             data = json.loads(conn.read())

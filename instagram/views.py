@@ -20,7 +20,7 @@ def index(request):
         return HttpResponseRedirect("/instagram/")
 
     try:
-        photos = token.recent_photos()
+        photos = token.get_photos()
     except InstagramException, e:
         logging.error("can't talk to instagram: %s"%e)
         return HttpResponseRedirect("/instagram/auth/?logout")

@@ -10,7 +10,10 @@ class InstagramPhotoFeed(Feed):
     description_template = 'instagram/_photo.html'
 
     def get_object(self, request, token_secret):
-        return get_object_or_404(AccessToken, feed_secret = token_secret)
+        token = get_object_or_404(AccessToken, feed_secret = token_secret)
+        token.filter_liked = request.REQUEST.get("liked", False)
+        return token
+
     
     def link(self, obj):
         return "http://feedify.movieos.org/instagram/"
@@ -20,7 +23,10 @@ class InstagramPhotoFeed(Feed):
 
     def items(self, obj):
         obj.touch()
-        return obj.recent_photos()
+        if obj.filter_liked:
+            return obj.get_photos("users/self/media/liked")
+        else:
+            return obj.get_photos()
 
     def item_title(self, item):
         try:

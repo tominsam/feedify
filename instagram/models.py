@@ -57,7 +57,7 @@ class AccessToken(models.Model):
 
     
     def get_photos(self, method="users/self/feed"):
-        cache_key = 'instagram_items_%s'%self.id
+        cache_key = 'instagram_items_%s_%s'%(self.id, method)
         self.last_time = None
         photos = cache.get(cache_key)
 

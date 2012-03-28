@@ -54,7 +54,7 @@ def deploy():
     sync_files()
     run("%s/bin/pip install -q -r %s/requirements.txt"%(VENV, DEPLOY))
     run("cd %s && %s/bin/python manage.py migrate"%(DEPLOY, VENV))
-    sudo("reload feedify")
+    sudo("stop feedify; sleep 1; start feedify")
 
 def get_database():
     run("mysqldump -uroot feedify | gzip -c > /tmp/feedify-dump.sql.gz", shell=False)

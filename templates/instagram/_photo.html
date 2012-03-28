@@ -7,7 +7,9 @@
     <div style="width: 380px; float: left; margin-left: 10px">
         <h2 style="border: 0; margin: 0 0 5px 0">{{ obj.user.full_name }}: <a href="{{ obj.link }}">{{ obj.caption.text|default:"{no caption}" }}</a></h2>
         <p><strong>uploaded</strong> {{ obj.created_time|date:"H:i F j Y" }}</p>
+        <p><a href="instagram://media?id={{ obj.id }}">open in Instagram app (on phone only)</a></p>
         {% if obj.tags %}<p><strong>tagged</strong> {{ obj.tags|join:" : " }}</p>{% endif %}
+        <br>
         {% for comment in obj.comments.data %}
 	        <p style="font-size: 80%; padding: 0; margin: 2px 0 0 0"><strong>{{ comment.from.full_name }}</strong>: {{ comment.text }}</p>	
         {% endfor %}

@@ -3,12 +3,6 @@ import os
 
 ROOT = os.path.dirname(__file__)
 
-PRODUCTION = False
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
 ADMINS = (
     ("Tom Insam", "tom@movieos.org")
 )
@@ -126,21 +120,21 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
         },
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'formatter': 'verbose',
-            'filename': (PRODUCTION and '/var/log/feedify/django.log' or 'django.log'),
-        },
+        # 'file': {
+        #     'level': 'DEBUG',
+        #     'class': 'logging.FileHandler',
+        #     'formatter': 'verbose',
+        #     'filename': '/var/log/feedify/django.log',
+        # },
     },
     'loggers': {
         'django': {
             'level': 'INFO', # SQL loggiung on debug
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
         },
         '': {
             'level': 'INFO', # SQL logging on debug
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
         },
     }
 }
@@ -174,6 +168,11 @@ INSTAGRAM_API_SECRET="4acc3891a73147dfb77262b0daf3cc01"
 
 
 
+PRODUCTION = False
+try:
+    from local_settings import *
+except ImportError:
+    pass
 
 
 

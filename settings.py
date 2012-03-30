@@ -156,30 +156,31 @@ INSTAGRAM_ACCESS_TOKEN_URL="https://api.instagram.com/oauth/access_token"
 INSTAGRAM_API_URL="https://api.instagram.com/v1/"
 
 
-# these are dev keys
-FLICKR_API_KEY="2d56dbb2d5cf87796478b53e4949dc66"
-FLICKR_API_SECRET="c27d752ea2bdba80"
-FLICKR_API_URL="http://api.flickr.com/services/rest/"
-
-# these are dev keys
-INSTAGRAM_API_KEY="2ee26d19721040c98b4f93da87d7b485"
-INSTAGRAM_API_SECRET="4acc3891a73147dfb77262b0daf3cc01"
 
 
-
-
-PRODUCTION = False
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
-
-
+PRODUCTION = os.environ.get("PRODUCTION", False)
 if PRODUCTION:
-    DEBUG = False
+    DEBUG=False
+    # ugh, hard-coding things sucks. Import production settings
+    # from a python file in my home directory, rather than checking
+    # them in.
+    import imp
+    prod = imp.load_source("production_settings", "/home/tomi/feedify_production.py")
+    for k in filter(lambda a: a[0] != "_", dir(prod)):
+        locals()[k] = getattr(prod, k)
+
 else:
-    DEBUG = True
+    DEBUG=True
+
+    # these are dev keys
+    FLICKR_API_KEY="2d56dbb2d5cf87796478b53e4949dc66"
+    FLICKR_API_SECRET="c27d752ea2bdba80"
+    FLICKR_API_URL="http://api.flickr.com/services/rest/"
+
+    # these are dev keys
+    INSTAGRAM_API_KEY="2ee26d19721040c98b4f93da87d7b485"
+    INSTAGRAM_API_SECRET="4acc3891a73147dfb77262b0daf3cc01"
+
 
 TEMPLATE_DEBUG = DEBUG
 

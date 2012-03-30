@@ -155,6 +155,8 @@ INSTAGRAM_AUTHORIZE_URL="https://api.instagram.com/oauth/authorize/"
 INSTAGRAM_ACCESS_TOKEN_URL="https://api.instagram.com/oauth/access_token"
 INSTAGRAM_API_URL="https://api.instagram.com/v1/"
 
+FLICKR_API_URL="http://api.flickr.com/services/rest/"
+
 
 
 
@@ -175,7 +177,6 @@ else:
     # these are dev keys
     FLICKR_API_KEY="2d56dbb2d5cf87796478b53e4949dc66"
     FLICKR_API_SECRET="c27d752ea2bdba80"
-    FLICKR_API_URL="http://api.flickr.com/services/rest/"
 
     # these are dev keys
     INSTAGRAM_API_KEY="2ee26d19721040c98b4f93da87d7b485"

@@ -167,7 +167,7 @@ if PRODUCTION:
     # from a python file in my home directory, rather than checking
     # them in.
     import imp
-    prod = imp.load_source("production_settings", "/home/tomi/feedify_production.py")
+    prod = imp.load_source("production_settings", "/home/tomi/deploy/seatbelt/feedify_production.py")
     for k in filter(lambda a: a[0] != "_", dir(prod)):
         locals()[k] = getattr(prod, k)
 

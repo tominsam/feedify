@@ -1,6 +1,6 @@
 import os, sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "deploy"))
-from fabutils import *
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "deployinator"))
+from deployinator.deployinator import *
 
 fab_init("feedify",
     database = "feedify",

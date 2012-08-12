@@ -35,7 +35,7 @@ MEDIA_URL = ''
 
 SITE_URL="http://localhost:8002"
 
-STATIC_URL='/static'
+STATIC_URL='/static/'
 
 STATICFILES_DIRS = (
     os.path.join(os.path.dirname(__file__), "static"),
@@ -171,6 +171,8 @@ if PRODUCTION:
     EMAIL_BACKEND="sendmail.EmailBackend"
     SERVER_EMAIL="tom@movieos.org"
     DEFAULT_FROM_EMAIL="tom@movieos.org"
+    STATIC_URL='http://feedify.movieos.org/static/'
+
     # ugh, hard-coding things sucks. Import production settings
     # from a python file in my home directory, rather than checking
     # them in.

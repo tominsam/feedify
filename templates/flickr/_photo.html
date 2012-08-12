@@ -11,6 +11,12 @@
     {% endif %}
 
     <h2>
+        {% if obj.isfriend or obj.isfamily %}
+            <img src="{{ STATIC_URL }}visibility_yellow.png">
+        {% else %}
+            <img src="{{ STATIC_URL }}visibility_green.png">
+        {% endif %}
+
         {% if obj.media == "video" %}
         Video by
         {% else %}

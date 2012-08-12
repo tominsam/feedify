@@ -4,7 +4,7 @@ import os
 ROOT = os.path.dirname(__file__)
 
 ADMINS = (
-    ("Tom Insam", "tom@movieos.org")
+    ("Tom Insam", "tom@movieos.org"),
 )
 
 MANAGERS = ADMINS
@@ -35,13 +35,10 @@ MEDIA_URL = ''
 
 SITE_URL="http://localhost:8002"
 
-ADMIN_MEDIA_PREFIX = '/static/admin/'
-
 STATIC_URL='/static'
 
 STATICFILES_DIRS = (
-    "static",
-    ("admin", "venv/lib/python2.7/site-packages/django/contrib/admin/media"),
+    os.path.join(os.path.dirname(__file__), "static"),
 )
 
 SECRET_KEY = 'dev-secret-key'
@@ -114,6 +111,11 @@ LOGGING = {
             'format': '%(levelname)s|%(asctime)s|%(process)d|%(module)s|%(message)s'
         },
     },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'handlers': {
         'console': {
             'level': 'DEBUG',
@@ -126,15 +128,20 @@ LOGGING = {
         #     'formatter': 'verbose',
         #     'filename': '/var/log/feedify/django.log',
         # },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
     },
     'loggers': {
         'django': {
             'level': 'INFO', # SQL loggiung on debug
-            'handlers': ['console'],
+            'handlers': ['console', "mail_admins"],
         },
         '': {
             'level': 'INFO', # SQL logging on debug
-            'handlers': ['console'],
+            'handlers': ['console', "mail_admins"],
         },
     }
 }
@@ -158,11 +165,12 @@ INSTAGRAM_API_URL="https://api.instagram.com/v1/"
 FLICKR_API_URL="http://api.flickr.com/services/rest/"
 
 
-
-
 PRODUCTION = os.environ.get("PRODUCTION", False)
 if PRODUCTION:
     DEBUG=False
+    EMAIL_BACKEND="sendmail.EmailBackend"
+    SERVER_EMAIL="tom@movieos.org"
+    DEFAULT_FROM_EMAIL="tom@movieos.org"
     # ugh, hard-coding things sucks. Import production settings
     # from a python file in my home directory, rather than checking
     # them in.

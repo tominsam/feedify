@@ -1,19 +1,28 @@
-<div class="photo" style="overflow: hidden; margin-bottom: 10px; width: 700px">
+<div class="photo" style="overflow: hidden; margin-bottom: 10px;">
 
-    <div style="width: 306px; height: 306px; float: left">
-      <a href="{{ obj.link }}"><img src="{{ obj.images.low_resolution.url }}"></a>
-    </div>
+    <p><a href="{{ obj.link }}"><img src="{{ obj.images.low_resolution.url }}" width="300" height="300"></a></p>
 
-    <div style="width: 380px; float: left; margin-left: 10px">
-        <h2 style="border: 0; margin: 0 0 5px 0">{{ obj.user.full_name }}: <a href="{{ obj.link }}">{{ obj.caption.text|default:"{no caption}" }}</a></h2>
-        <p><strong>uploaded</strong> {{ obj.created_time|date:"H:i F j Y" }}</p>
-        <p><a href="instagram://media?id={{ obj.id }}">open in Instagram app (on phone only)</a></p>
-        {% if obj.tags %}<p><strong>tagged</strong> {{ obj.tags|join:" : " }}</p>{% endif %}
-        <br>
-        {% for comment in obj.comments.data %}
-	        <p style="font-size: 80%; padding: 0; margin: 2px 0 0 0"><strong>{{ comment.from.full_name }}</strong>: {{ comment.text }}</p>	
-        {% endfor %}
-    </div>
+    {% if obj.location %}
+        <p>
+            <a href="http://maps.google.com/maps?q={{obj.location.latitude}},{{obj.location.longitude}}">
+            <img src="http://movieos.org/map/?c={{obj.location.latitude|floatformat:2}},{{obj.location.longitude|floatformat:2}}&amp;z=9&amp;s=300x100&amp;p=center" style="border: 1px solid black;">
+            </a>
+        </p>
+    {% endif %}
+
+    <h2>{{ obj.user.full_name }}: <a href="{{ obj.link }}">{{ obj.caption.text|default:"{no caption}" }}</a></h2>
+    <p>uploaded&nbsp;<strong>{{ obj.created_time|date:"H:i F j Y" }}</strong>
+    {% if obj.location.name %}
+        at&nbsp;<strong>{{ obj.location.name }}</strong>
+    {% endif %}
+    </p>
+
+    {# <p><a href="instagram://media?id={{ obj.id }}">open in Instagram app (on phone only)</a></p> #}
+    {% if obj.tags %}<p><strong>tagged</strong> {{ obj.tags|join:" : " }}</p>{% endif %}
+
+    {% for comment in obj.comments.data %}
+        <p style="font-size: 80%; padding: 0; margin: 2px 0 0 0"><strong>{{ comment.from.full_name }}</strong>: {{ comment.text }}</p>	
+    {% endfor %}
 
 </div>
 

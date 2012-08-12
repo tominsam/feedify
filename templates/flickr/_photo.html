@@ -1,11 +1,11 @@
-<div class="photo" style="overflow: hidden; margin-bottom: 10px; width: 700px">
+<div class="photo" style="overflow: hidden; margin-bottom: 10px; width: 300px">
 
-    <div style="width: 240px; float: left">
-      <a href="{{ obj.link }}"><img src="{{ obj.url_s }}"></a>
+    <div style="width: 300px">
+      <a href="{{ obj.link }}"><img src="{{ obj.url_s }}" width="300"></a>
     </div>
 
-    <div style="width: 450px; float: left; margin-left: 10px">
-        <h2 style="border: 0; margin: 0 0 5px 0">{{ obj.ownername }}: <a href="{{ obj.link }}">{{ obj.title|default:"{no title}" }}</a></h2>
+    <div style="width: 300px">
+        <h2>{{ obj.ownername }}: <a href="{{ obj.link }}">{{ obj.title|default:"{no title}" }}</a></h2>
         <p><strong>uploaded</strong> {{ obj.upload_date|date:"H:i F j Y" }}</p>
         {% if obj.tags %}<p><strong>tagged</strong> {{ obj.tags|join:" : " }}</p>{% endif %}
         <p>{{ obj.description|safe }}</p>

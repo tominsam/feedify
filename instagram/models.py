@@ -41,14 +41,21 @@ class AccessToken(models.Model):
         try:
             return cls.objects.create(**properties)
         except IntegrityError:
-            token = cls.objects.get(key=data["access_token"])
-            if token.userid != properties["userid"]:
-                raise Exception("token re-used for another user. BAD THING.")
+            try:
+                token = cls.objects.get(key=data["access_token"])
+            except cls.DoesNotExist:
+                # this normally means we're getting a new token for an old user ID.
+                # assume this means the old token is invalid.
+                cls.objects.filter(userid=data["user"]["id"]).delete()
+                return cls.objects.create(**properties)
 
-            for k, v in properties.items():
-                setattr(token, k, v)
-            token.save()
-            return token
+        if token.userid != properties["userid"]:
+            raise Exception("token re-used for another user. BAD THING.")
+        for k, v in properties.items():
+            setattr(token, k, v)
+        token.save()
+        return token
+
 
     def save(self, *args, **kwargs):
         if not self.feed_secret:

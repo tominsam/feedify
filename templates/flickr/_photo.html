@@ -1,14 +1,26 @@
-<div class="photo" style="overflow: hidden; margin-bottom: 10px; width: 300px">
+<div class="photo" style="overflow: hidden; margin-bottom: 10px;">
 
-    <div style="width: 300px">
-      <a href="{{ obj.link }}"><img src="{{ obj.url_s }}" width="300"></a>
-    </div>
+    <p><a href="{{ obj.link }}"><img src="{{ obj.url_s }}" width="300" height="300"></a></p>
 
-    <div style="width: 300px">
-        <h2>{{ obj.ownername }}: <a href="{{ obj.link }}">{{ obj.title|default:"{no title}" }}</a></h2>
-        <p><strong>uploaded</strong> {{ obj.upload_date|date:"H:i F j Y" }}</p>
-        {% if obj.tags %}<p><strong>tagged</strong> {{ obj.tags|join:" : " }}</p>{% endif %}
-        <p>{{ obj.description|safe }}</p>
-    </div>
+    {% if obj.latitude and obj.longitude %}
+        <p>
+            <a href="http://maps.google.com/maps?q={{obj.latitude}},{{obj.longitude}}">
+            <img src="http://movieos.org/map/?c={{obj.latitude|floatformat:2}},{{obj.longitude|floatformat:2}}&amp;z=9&amp;s=300x100&amp;p=center" style="border: 1px solid black;">
+            </a>
+        </p>
+    {% endif %}
+
+    <h2>
+        {% if obj.media == "video" %}
+        Video by
+        {% else %}
+        Photo by
+        {% endif %}
+        {{ obj.ownername }}: <a href="{{ obj.link }}">{{ obj.title|default:"{no title}" }}</a>
+    </h2>
+
+    <p><strong>uploaded</strong> {{ obj.upload_date|date:"H:i F j Y" }}</p>
+    {% if obj.tags %}<p><strong>tagged</strong> {{ obj.tags|join:" : " }}</p>{% endif %}
+    <p>{{ obj.description|safe }}</p>
 
 </div>

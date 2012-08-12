@@ -17,6 +17,8 @@
 <p>You can get a feed of photos you've liked at</p>
 <center><pre><strong>{{ settings.SITE_URL }}/instagram/feed/{{ token.feed_secret }}/?liked=1</strong></pre></center>
 
+<p>You should keep these feed URLs secret! Anyone who knows them will be able to see this stream of photos.</p>
+
 {% for obj in photos %}
     <hr>
     {% include "instagram/_photo.html" %}

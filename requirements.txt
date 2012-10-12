@@ -6,3 +6,4 @@ oauth2
 python-memcached
 django-redis-cache
 
+eventlet

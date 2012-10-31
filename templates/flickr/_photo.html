@@ -1,6 +1,6 @@
 <div class="photo" style="overflow: hidden; margin-bottom: 10px;">
 
-    <p><a href="{{ obj.link }}"><img src="{{ obj.url_s }}" height="300"></a></p>
+    <p><a href="{{ obj.link }}"><img src="{{ obj.url_m }}" width="{{ obj.width_m }}" height="{{ obj.height_m }}"></a></p>
 
     {% if obj.latitude and obj.longitude %}
         <p>

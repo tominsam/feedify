@@ -38,22 +38,12 @@ class AccessToken(models.Model):
             userid = data["user"]["id"],
             updated = datetime.datetime.utcnow(),
         )
-        try:
-            return cls.objects.create(**properties)
-        except IntegrityError:
-            try:
-                token = cls.objects.get(key=data["access_token"])
-            except cls.DoesNotExist:
-                # this normally means we're getting a new token for an old user ID.
-                # assume this means the old token is invalid.
-                cls.objects.filter(userid=data["user"]["id"]).delete()
-                return cls.objects.create(**properties)
 
-        if token.userid != properties["userid"]:
-            raise Exception("token re-used for another user. BAD THING.")
-        for k, v in properties.items():
-            setattr(token, k, v)
-        token.save()
+        token, created = cls.objects.get_or_create(userid=properties["userid"], defaults=properties)
+        if not created:
+            for k, v in properties.items():
+                setattr(token, k, v)
+            token.save()
         return token
 
 

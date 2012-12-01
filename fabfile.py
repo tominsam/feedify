@@ -4,6 +4,7 @@ from deployinator.deployinator import *
 
 fab_init("feedify",
     database = "feedify",
+    postgresql = True,
     rules = {
         "nginx": "deploy/nginx.conf",
         "gunicorn": {

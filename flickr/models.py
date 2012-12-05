@@ -1,4 +1,4 @@
-from django.db import models, IntegrityError
+from django.db import models
 from django.conf import settings
 from django.core.cache import cache
 
@@ -32,10 +32,11 @@ class RequestToken(models.Model):
     @classmethod
     def from_string(cls, string):
         data = dict(urlparse.parse_qsl(string))
-        try:
-            return cls.objects.create(key = data["oauth_token"], secret = data["oauth_token_secret"])
-        except IntegrityError:
-            return cls.objects.get(key = data["oauth_token"])
+        token, created = cls.objects.get_or_create(key=data["oauth_token"], defaults=dict(secret = data["oauth_token_secret"]))
+        if not created:
+            token.secret = data["oauth_token_secret"]
+            token.save()
+        return token
     
     def token(self):
         return oauth2.Token(self.key, self.secret)
@@ -68,20 +69,13 @@ class AccessToken(models.Model):
             fullname = data.get("fullname", data["username"]),
             updated = datetime.datetime.utcnow(),
         )
-        try:
-            return cls.objects.create(**properties)
-        except IntegrityError:
-            try:
-                token = cls.objects.get(key=properties["key"])
-                if token.nsid != properties["nsid"]:
-                    raise Exception("token re-used for another user. BAD THING.")
-            except cls.DoesNotExist:
-                token = cls.objects.get(nsid=properties["nsid"])
 
+        token, created = cls.objects.get_or_create(key=properties["key"], defaults=properties)
+        if not created:
             for k, v in properties.items():
                 setattr(token, k, v)
             token.save()
-            return token
+        return token
 
     def token(self):
         return oauth2.Token(self.key, self.secret)

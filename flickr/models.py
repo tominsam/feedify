@@ -70,6 +70,8 @@ class AccessToken(models.Model):
             updated = datetime.datetime.utcnow(),
         )
 
+        # remove old IDs for this user.
+        cls.objects.filter(nsid=properties["nsid"]).exclude(key=properties["key"]).delete()
         token, created = cls.objects.get_or_create(key=properties["key"], defaults=properties)
         if not created:
             for k, v in properties.items():

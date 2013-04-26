@@ -60,8 +60,8 @@ class AccessToken(models.Model):
 
         if not photos:
             url = "https://api.instagram.com/v1/%s?access_token=%s"%(method, self.key)
-            conn = urllib2.urlopen(url)
             start = time.time()
+            conn = urllib2.urlopen(url)
             data = json.loads(conn.read())
             self.last_time = time.time() - start
             photos = data["data"]

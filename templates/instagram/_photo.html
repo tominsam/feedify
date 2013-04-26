@@ -1,6 +1,6 @@
 <div class="photo" style="overflow: hidden; margin-bottom: 10px;">
 
-    <p><a href="{{ obj.link }}"><img src="{{ obj.images.low_resolution.url }}" width="300" height="300"></a></p>
+    <p><a href="{{ obj.link }}"><img src="{{ obj.images.low_resolution.url|default:obj.images.low_resolution }}" width="300" height="300"></a></p>
 
     {% if obj.location %}
         <p>

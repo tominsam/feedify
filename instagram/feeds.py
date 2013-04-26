@@ -53,17 +53,26 @@ class InstagramPhotoFeed(Feed):
         if "location" in item and item["location"] and "latitude" in item["location"] and "longitude" in item["location"]:
             extra["latitude"] = item["location"]["latitude"]
             extra["longiutude"] = item["location"]["longitude"]
-        
-        extra["media:thumbnail"] = dict(
-            url = item["images"]["thumbnail"]["url"],
-            width = str(item["images"]["thumbnail"]["width"]),
-            height = str(item["images"]["thumbnail"]["height"]),
-        )
-        extra["media:content"] = dict(
-            url = item["images"]["standard_resolution"]["url"],
-            width = str(item["images"]["standard_resolution"]["width"]),
-            height = str(item["images"]["standard_resolution"]["height"]),
-        )
+
+        # https://groups.google.com/forum/?fromgroups=#!topic/instagram-api-developers/ncB18unjqyg
+        if isinstance(item["images"]["thumbnail"], dict):
+            extra["media:thumbnail"] = dict(
+                url = item["images"]["thumbnail"]["url"],
+                width = str(item["images"]["thumbnail"]["width"]),
+                height = str(item["images"]["thumbnail"]["height"]),
+            )
+            extra["media:content"] = dict(
+                url = item["images"]["standard_resolution"]["url"],
+                width = str(item["images"]["standard_resolution"]["width"]),
+                height = str(item["images"]["standard_resolution"]["height"]),
+            )
+        else:
+            extra["media:thumbnail"] = dict(
+                url = item["images"]["thumbnail"],
+            )
+            extra["media:content"] = dict(
+                url = item["images"]["standard_resolution"],
+            )
 
         return extra
     

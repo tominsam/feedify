@@ -126,19 +126,28 @@ class AccessToken(models.Model):
         photos = cache.get(cache_key)
 
         if not photos:
-            response = self.call("get", "flickr.photos.getContactsPhotos", 
-                count = 50,
-                extras = EXTRAS,
-                just_friends = (just_friends and "1" or "0"),
-                include_self = (include_self and "1" or "0"),
-            )
-            photos = response["photos"]["photo"]
+            try:
+                response = self.call("get", "flickr.photos.getContactsPhotos", 
+                    count = 50,
+                    extras = EXTRAS,
+                    just_friends = (just_friends and "1" or "0"),
+                    include_self = (include_self and "1" or "0"),
+                )
+                photos = response["photos"]["photo"]
+            except FlickrException:
+                # don't cache failure
+                return []
 
             def filter_instagram(p):
                 mt = p["machine_tags"].split()
                 return not "uploaded:by=instagram" in mt
             if no_instagram:
                 photos = filter(filter_instagram, photos)
+    
+            def filter_aaron(p):
+                mt = p["machine_tags"].split()
+                return not "uploaded:by=parallelflickr" in mt
+            photos = filter(filter_aaron, photos)
     
             cache.set(cache_key, photos, 120)
 

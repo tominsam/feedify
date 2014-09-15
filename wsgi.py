@@ -1,5 +1,8 @@
 import os
 
+import eventlet
+eventlet.monkey_patch()
+
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")
 
 # This application object is used by the development server

@@ -1,8 +1,11 @@
 Django==1.7
 django-debug-toolbar
 gunicorn
-oauth2
 python-memcached
 django-redis-cache
 
 eventlet
+
+
+httplib2==0.7.2 # certificate thing
+oauth2

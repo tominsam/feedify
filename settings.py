@@ -31,6 +31,8 @@ MEDIA_URL = ''
 
 SITE_URL="http://localhost:8002"
 
+ALLOWED_HOSTS=["*"]
+
 STATIC_URL='/static/'
 
 STATICFILES_DIRS = (
@@ -149,15 +151,15 @@ CACHES = {
 }
 
 
-FLICKR_REQUEST_TOKEN_URL="http://www.flickr.com/services/oauth/request_token"
-FLICKR_ACCESS_TOKEN_URL="http://www.flickr.com/services/oauth/access_token"
-FLICKR_AUTHORIZE_URL="http://www.flickr.com/services/oauth/authorize"
+FLICKR_REQUEST_TOKEN_URL="https://www.flickr.com/services/oauth/request_token"
+FLICKR_ACCESS_TOKEN_URL="https://www.flickr.com/services/oauth/access_token"
+FLICKR_AUTHORIZE_URL="https://www.flickr.com/services/oauth/authorize"
 
 INSTAGRAM_AUTHORIZE_URL="https://api.instagram.com/oauth/authorize/"
 INSTAGRAM_ACCESS_TOKEN_URL="https://api.instagram.com/oauth/access_token"
 INSTAGRAM_API_URL="https://api.instagram.com/v1/"
 
-FLICKR_API_URL="http://api.flickr.com/services/rest/"
+FLICKR_API_URL="https://api.flickr.com/services/rest/"
 
 
 PRODUCTION = os.environ.get("PRODUCTION", False)

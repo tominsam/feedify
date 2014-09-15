@@ -9,6 +9,7 @@ import oauth2
 import uuid
 import json
 import time
+import logging
 
 EXTRAS = "date_upload,date_taken,owner_name,icon_server,original_format,description,geo,tags,machine_tags,o_dims,media,path_alias,url_t,url_s,url_m,url_z,url_l,url_o"
 
@@ -16,7 +17,7 @@ class FlickrException(Exception):
     def __init__(self, code, message):
         self.code = code
         super(FlickrException, self).__init__(message)
-    
+
     def __unicode__(self):
         return u"%s: %s"%(self.code, self.message)
 
@@ -37,7 +38,7 @@ class RequestToken(models.Model):
             token.secret = data["oauth_token_secret"]
             token.save()
         return token
-    
+
     def token(self):
         return oauth2.Token(self.key, self.secret)
 
@@ -81,7 +82,7 @@ class AccessToken(models.Model):
 
     def token(self):
         return oauth2.Token(self.key, self.secret)
-    
+
     def save(self, *args, **kwargs):
         if not self.feed_secret:
             self.feed_secret = str(uuid.uuid4())[:13]
@@ -118,7 +119,7 @@ class AccessToken(models.Model):
                 raise FlickrException(data["code"], data["message"])
             return data
         return content
-    
+
     def recent_photos(self, no_instagram=False, just_friends=False, include_self=False):
         self.last_time = None
 
@@ -127,14 +128,15 @@ class AccessToken(models.Model):
 
         if not photos:
             try:
-                response = self.call("get", "flickr.photos.getContactsPhotos", 
+                response = self.call("get", "flickr.photos.getContactsPhotos",
                     count = 50,
                     extras = EXTRAS,
                     just_friends = (just_friends and "1" or "0"),
                     include_self = (include_self and "1" or "0"),
                 )
                 photos = response["photos"]["photo"]
-            except FlickrException:
+            except FlickrException, e:
+                logging.error(e)
                 # don't cache failure
                 return []
 
@@ -143,23 +145,23 @@ class AccessToken(models.Model):
                 return not "uploaded:by=instagram" in mt
             if no_instagram:
                 photos = filter(filter_instagram, photos)
-    
+
             def filter_aaron(p):
                 mt = p["machine_tags"].split()
                 return not "uploaded:by=parallelflickr" in mt
             photos = filter(filter_aaron, photos)
-    
+
             cache.set(cache_key, photos, 120)
 
         for p in photos:
             p["description"] = p["description"]["_content"]
-            p["link"] = "http://flickr.com/photos/%s/%s"%(p["pathalias"] or p["owner"], p['id'])
+            p["link"] = "https://flickr.com/photos/%s/%s"%(p["pathalias"] or p["owner"], p['id'])
             p["upload_date"] = datetime.datetime.utcfromtimestamp(float(p["dateupload"]))
             p["tags"] = p["tags"].split()
-        
+
         return photos
 
     def touch(self):
         self.fetched = datetime.datetime.utcnow()
         self.save()
-        
+

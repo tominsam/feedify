@@ -8,11 +8,9 @@ import logging
 
 from django.conf import settings
 from django.contrib.sessions.backends.base import SessionBase
-from django.core.exceptions import SuspiciousOperation
-from django.utils import simplejson
 from django.utils.cache import patch_vary_headers
-from django.utils.encoding import force_unicode
 from django.utils.http import cookie_date
+import json
 
 MAX_COOKIE_SIZE = 4096
 
@@ -86,20 +84,20 @@ class SessionStore(SessionBase):
         pass
 
     def encode(self, session_dict):
-        json = simplejson.dumps(session_dict)
-        json_md5 = hashlib.md5(json + settings.SECRET_KEY).hexdigest()
+        data = json.dumps(session_dict)
+        json_md5 = hashlib.md5(data + settings.SECRET_KEY).hexdigest()
         try:
-            return b64encode(zlib.compress(json + json_md5))
-        except Exception, e:
+            return b64encode(zlib.compress(data + json_md5))
+        except Exception:
             return ''
 
     def decode(self, session_data):
         try:
             data = zlib.decompress(b64decode(session_data))
-        except Exception, e:
+        except Exception:
             return {}
-        json, json_md5 = data[:-32], data[-32:]
-        if hashlib.md5(json + settings.SECRET_KEY).hexdigest() != json_md5:
+        data, json_md5 = data[:-32], data[-32:]
+        if hashlib.md5(data + settings.SECRET_KEY).hexdigest() != json_md5:
             logging.error('User tampered with session cookie')
             return {}
-        return simplejson.loads(json)
+        return json.loads(data)

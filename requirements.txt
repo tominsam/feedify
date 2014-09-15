@@ -1,5 +1,4 @@
-Django>=1.4.1
-South
+Django==1.7
 django-debug-toolbar
 gunicorn
 oauth2

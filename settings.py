@@ -11,10 +11,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'feedify',
-        'USER': 'feedify',
-        'PASSWORD': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(os.path.dirname(__file__), 'default.db'),
     }
 }
 
@@ -93,8 +91,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # deps
-    "south",
-    "debug_toolbar",
+    #"debug_toolbar",
 
     # my apps
     "core",
@@ -150,7 +147,7 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
-    
+
 
 FLICKR_REQUEST_TOKEN_URL="http://www.flickr.com/services/oauth/request_token"
 FLICKR_ACCESS_TOKEN_URL="http://www.flickr.com/services/oauth/access_token"

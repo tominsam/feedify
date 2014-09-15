@@ -1,8 +1,7 @@
 from django.db import models
-from django.conf import settings
 from django.core.cache import cache
 
-import urllib, urllib2
+import urllib2
 import datetime
 import uuid
 import json
@@ -12,7 +11,7 @@ class InstagramException(Exception):
     def __init__(self, code, message):
         self.code = code
         super(InstagramException, self).__init__(message)
-    
+
     def __unicode__(self):
         return u"%s: %s"%(self.code, self.message)
 
@@ -52,7 +51,7 @@ class AccessToken(models.Model):
             self.feed_secret = str(uuid.uuid4())[:13]
         return super(AccessToken, self).save(*args, **kwargs)
 
-    
+
     def get_photos(self, method="users/self/feed"):
         cache_key = 'instagram_items_%s_%s'%(self.id, method)
         self.last_time = None
@@ -75,7 +74,7 @@ class AccessToken(models.Model):
             if not p["link"]:
                 # private photos don't have public links. link to full-rez image instead.
                 p["link"] = p["images"]["standard_resolution"]["url"]
-        
+
         return photos
 
     def touch(self):

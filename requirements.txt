@@ -1,4 +1,4 @@
-Django==1.7
+Django==1.11.29
 django-debug-toolbar
 gunicorn
 python-memcached
